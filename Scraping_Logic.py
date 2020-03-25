@@ -1,5 +1,8 @@
 import pandas as pd
 import json
+from lxml import html
+import requests
+import re
 
 try:
     # For Python 3.0 and later
@@ -59,7 +62,6 @@ def get_revenue_profit(ticker):
     pd_quarterly.insert(2, "Revenue Growth (%)", revenue_growth, True)
     pd_quarterly.insert(4, "EPS Growth (%)", q_eps_growth, True)
     pd_quarterly.set_index('date')
-    print(pd_quarterly)
     last_ten_rev = pd_quarterly.iloc[0:10,2]
     last_four_rev = pd_quarterly.iloc[0:4, 2]
     last_two_rev = pd_quarterly.iloc[0:2, 2]
@@ -91,12 +93,23 @@ def get_revenue_profit(ticker):
     return(rev_result, eps_result)
 
 
-
-def get_profit(ticker):
-    return (True)
-
 def get_altman(ticker):
-    return (True)
+    page = requests.get("https://www.gurufocus.com/term/zscore/"+ticker+ "/Altman-Z-Score/")
+    tree = html.fromstring(page.content)
+    z_score_string = str(tree.xpath('//*[@id="target_def_description"]/p[1]/strong/text()')[0])
+    match = re.match(r".*indicating it is in (.*). This", z_score_string)
+    z_score = match.group(1)
+    if(z_score == 'Distress Zones'):
+        return(0)
+    elif(z_score == 'Gray Zones'):
+        return(2)
+    elif(z_score == 'Safe Zones'):
+        return(3)
+    else:
+        return (1)
 
-def yearly_range(ticker):
-    return (True)
+
+
+def get_yearly_range(ticker):
+    url = 'https://finance.yahoo.com/quote/' + ticker + '?p=' + ticker
+    fund_1_df = pd.read_html(url)[0]
