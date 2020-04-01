@@ -15,7 +15,6 @@ external_stylesheets = ['https://codepen.io/chriddyp/pen/bWLwgP.css']
 app = dash.Dash(__name__, external_stylesheets=external_stylesheets)
 
 
-
 app.layout = html.Div(children=[
     html.Div(id = 'Title', style={'margin':25, 'textAlign': 'center'}),
 
@@ -26,7 +25,7 @@ app.layout = html.Div(children=[
     html.Div(id='intermediate-value', style={'display': 'none'}),
 
 
-    html.H3('Fundamentals', style={'padding': 10}),
+    html.Div(id='Fundamental_Score'),
     html.Div(id='fundamentals-table'),
 
     html.Div([
@@ -36,10 +35,12 @@ app.layout = html.Div(children=[
                 id='Brand_Strength',
                 min=0,
                 max=3,
-                value=0,
-                marks={0: 'Nobody knows this brand', 1: 'Lesser-known', 2: 'Well-known ', 3: 'Household name'}
-            )
-        ], style={'padding': 25}, className="six columns"),
+                step=1,
+                value = 0,
+                updatemode='drag'
+            ),
+            html.Div(id='slider_1', style={'margin-top': 10})
+        ], style={'padding': 10}, className="six columns"),
 
         html.Div([
             html.H6('How strong is the product?'),
@@ -48,9 +49,10 @@ app.layout = html.Div(children=[
                 min=0,
                 max=3,
                 value=0,
-                marks={0: 'Going away eventually', 1: 'Some people will still buy this product', 2: 'Even during times of change, there will be an impact, but there will also be demand', 3: 'There will always be some people who want this product'}
-            )
-        ], style={'padding': 25}, className="six columns"),
+                updatemode='drag'
+            ),
+            html.Div(id='slider_2', style={'margin-top': 10})
+        ], style={'padding': 10}, className="six columns"),
     ],className="row"),
     html.Div(children='''
         
@@ -64,9 +66,10 @@ app.layout = html.Div(children=[
                 min=0,
                 max=3,
                 value=0,
-                marks={0: 'This whole industry is about to go away', 1: 'Industry is in serious trouble', 2: 'Industry is starting to wane', 3: 'Industry is strong, just this one company is not doing well'}
-            )
-        ], style={'padding': 25}, className="six columns"),
+                updatemode='drag'
+            ),
+            html.Div(id='slider_3', style={'margin-top': 10})
+        ], style={'padding': 10}, className="six columns"),
 
         html.Div([
             html.H6('Turnaround plan?'),
@@ -75,14 +78,13 @@ app.layout = html.Div(children=[
                 min=0,
                 max=3,
                 value=0,
-                marks={0: 'Bad and Will Get Worse', 1: 'Unlikely', 2: 'OK Shot', 3: 'Good shot'}
-            )
-        ], style={'padding': 25}, className="six columns"),
+                updatemode='drag'
+            ),
+            html.Div(id='slider_4', style={'margin-top': 10})
+        ], style={'padding': 10}, className="six columns"),
     ], className="row"),
 
-    html.Div(id = 'Fundamental_Score'),
-
-    html.H3('Sentiment', style={'padding': 10}),
+    html.Div(id='Sentiment_Score'),
 
     html.Div([
         html.Div([
@@ -92,9 +94,10 @@ app.layout = html.Div(children=[
                 min=0,
                 max=3,
                 value=0,
-                marks={0: 'Price is at all time lows and dropping fast', 1: 'Price has been stable or declining ', 2: 'Price gradually went up and has plateaued OR Price is close to lows but there has been a recent recovery and plateau', 3: 'Big step up in the price in the last year '}
-            )
-        ], style={'padding': 25}, className="six columns"),
+                updatemode='drag'
+            ),
+            html.Div(id='slider_5', style={'margin-top': 10})
+        ], style={'padding': 10}, className="six columns"),
 
         html.Div([
             html.H6('How strong is the product?'),
@@ -103,9 +106,10 @@ app.layout = html.Div(children=[
                 min=0,
                 max=3,
                 value=0,
-                marks={0: 'Horrible', 1: 'Bad', 2: 'OK', 3: 'Good'}
-            )
-        ], style={'padding': 25}, className="six columns"),
+                updatemode='drag'
+            ),
+            html.Div(id='slider_6', style={'margin-top': 10})
+        ], style={'padding': 10}, className="six columns"),
     ], className="row"),
     html.Div(children='''
 
@@ -119,14 +123,14 @@ app.layout = html.Div(children=[
                 min=0,
                 max=3,
                 value=0,
-                marks={0: 'Very Bearish', 1: 'Mixed with bad bias', 2: 'Mixed with good bias', 3: 'Good ratings'}
-            )
-        ], style={'padding': 25}, className="six columns"),
+                updatemode='drag'
+            ),
+            html.Div(id='slider_7', style={'margin-top': 10})
+        ], style={'padding': 10}, className="six columns"),
 
         html.Div(id='score'),
     ], className="row"),
 
-    html.Div(id = 'Sentiment_Score'),
 
     html.Div(id='Advantage_Score')
 
@@ -267,6 +271,107 @@ def update_fundamental_score(a,b,c,d,e,f,g,h):
 
 
 
+#Update Slider
+
+@app.callback(Output('slider_1', 'children'),
+              [Input('Brand_Strength', 'value')])
+def display_value(value):
+    output = ""
+    if(value==0):
+        output = "nobody knows this brand"
+    if(value==1):
+        output = "Lesser-known"
+    if(value==2):
+        output = "Even during times of change, there will be an impact, but there will also be demand"
+    if(value==3):
+        output = "There will always be some people who want this product"
+    return output
+
+
+@app.callback(Output('slider_2', 'children'),
+              [Input('Product_Strength', 'value')])
+def display_value(value):
+    output = ""
+    if(value==0):
+        output = "This is going away completely eventually"
+    if(value==1):
+        output = "Some people will still buy this product"
+    if(value==2):
+        output = "Even during times of change, there will be an impact, but there will also be demand"
+    if(value==3):
+        output = "There will always be some people who want this product"
+    return output
+
+@app.callback(Output('slider_3', 'children'),
+              [Input('Industry_Disruption', 'value')])
+def display_value(value):
+    output = ""
+    if(value==0):
+        output = "This whole industry is about to go away"
+    if(value==1):
+        output = "Industry is in serious trouble"
+    if(value==2):
+        output = "Industry is starting to wane"
+    if(value==3):
+        output = "Industry is strong, just this one company isn't doing well"
+    return output
+
+@app.callback(Output('slider_4', 'children'),
+              [Input('Turnaround_Plan', 'value')])
+def display_value(value):
+    output = ""
+    if(value==0):
+        output = "Bad and Will Get Worse"
+    if(value==1):
+        output = "Unlikely"
+    if(value==2):
+        output = "OK Shot"
+    if(value==3):
+        output = "Good shot"
+    return output
+
+@app.callback(Output('slider_5', 'children'),
+              [Input('Range', 'value')])
+def display_value(value):
+    output = ""
+    if(value==0):
+        output = "Price is at all time lows and dropping fast"
+    if(value==1):
+        output = "Price has been stable or declining "
+    if(value==2):
+        output = "Price gradually went up and has plateaued OR Price is close to lows but there has been a recent recovery and plateau"
+    if(value==3):
+        output = "Big step up in the price in the last year "
+    return output
+
+
+@app.callback(Output('slider_6', 'children'),
+              [Input('News', 'value')])
+def display_value(value):
+    output = ""
+    if(value==0):
+        output = "Horrible"
+    if(value==1):
+        output = "Bad"
+    if(value==2):
+        output = "OK"
+    if(value==3):
+        output = "Good"
+    return output
+
+@app.callback(Output('slider_7', 'children'),
+              [Input('Analyst', 'value')])
+def display_value(value):
+    output = ""
+    if(value==0):
+        output = "Very Bearish"
+    if(value==1):
+        output = "Mixed with bad bias"
+    if(value==2):
+        output = "Mixed with good bias"
+    if(value==3):
+        output = "Good ratings"
+    return output
 if __name__ == '__main__':
     app.run_server(debug=True)
 
