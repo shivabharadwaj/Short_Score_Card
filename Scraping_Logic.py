@@ -99,15 +99,15 @@ def get_altman(ticker):
     z_score_string = str(tree.xpath('//*[@id="target_def_description"]/p[1]/strong/text()')[0])
     match = re.match(r".*indicating it is in (.*). This", z_score_string)
     z_score = match.group(1)
+    print(z_score)
     if(z_score == 'Distress Zones'):
         return(0)
-    elif(z_score == 'Gray Zones'):
+    elif(z_score == 'Grey Zones'):
         return(2)
     elif(z_score == 'Safe Zones'):
         return(3)
     else:
         return (1)
-
 
 
 def get_yearly_range(ticker):
