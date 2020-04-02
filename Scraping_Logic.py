@@ -2,7 +2,7 @@ import pandas as pd
 import json
 from lxml import html
 import requests
-import re
+import regex
 
 try:
     # For Python 3.0 and later
@@ -97,9 +97,8 @@ def get_altman(ticker):
     page = requests.get("https://www.gurufocus.com/term/zscore/"+ticker+ "/Altman-Z-Score/")
     tree = html.fromstring(page.content)
     z_score_string = str(tree.xpath('//*[@id="target_def_description"]/p[1]/strong/text()')[0])
-    match = re.match(r".*indicating it is in (.*). This", z_score_string)
+    match = regex.match(r".*indicating it is in (.*). This", z_score_string)
     z_score = match.group(1)
-    print(z_score)
     if(z_score == 'Distress Zones'):
         return(0)
     elif(z_score == 'Grey Zones'):
@@ -108,6 +107,7 @@ def get_altman(ticker):
         return(3)
     else:
         return (1)
+
 
 
 def get_yearly_range(ticker):
