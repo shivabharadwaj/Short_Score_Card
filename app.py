@@ -60,7 +60,7 @@ app.layout = html.Div(children=[
 
     html.Div([
         html.Div([
-            html.H6('Idustry disruption'),
+            html.H6('Industry disruption'),
             dcc.Slider(
                 id='Industry_Disruption',
                 min=0,
