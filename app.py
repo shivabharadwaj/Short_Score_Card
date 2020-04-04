@@ -60,7 +60,7 @@ app.layout = html.Div(children=[
 
     html.Div([
         html.Div([
-            html.H6('Industry being disrupted?'),
+            html.H6('Idustry disruption'),
             dcc.Slider(
                 id='Industry_Disruption',
                 min=0,
@@ -72,7 +72,7 @@ app.layout = html.Div(children=[
         ], style={'padding': 10}, className="six columns"),
 
         html.Div([
-            html.H6('Turnaround plan?'),
+            html.H6('Turnaround plan'),
             dcc.Slider(
                 id='Turnaround_Plan',
                 min=0,
@@ -117,7 +117,7 @@ app.layout = html.Div(children=[
 
     html.Div([
         html.Div([
-            html.H6('Analyst'),
+            html.H6('Analyst Opinion'),
             dcc.Slider(
                 id='Analyst',
                 min=0,
