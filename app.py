@@ -131,6 +131,17 @@ app.layout = html.Div(children=[
         html.Div(id='score'),
     ], className="row"),
 
+    dcc.RadioItems(
+        id = 'updated',
+        options=[
+            {'label': 'I HAVE NOT updated the sliders', 'value': 'N'},
+            {'label': 'I HAVE updated the sliders', 'value': 'Y'}
+        ],
+        value='N',
+        labelStyle={'display': 'inline-block', 'padding': 5}
+    ),
+
+
 
     html.Div(id='Advantage_Score')
 
@@ -259,9 +270,11 @@ def update_fundamental_score(a,b,c):
 
 @app.callback(
     Output(component_id = 'Advantage_Score', component_property='children'),
-    [Input('Brand_Strength','value'), Input('Product_Strength','value'), Input('Industry_Disruption','value'), Input('Turnaround_Plan','value'),Input('intermediate-value', 'children'),Input('Range','value'), Input('News','value'), Input('Analyst','value')]
+    [Input('updated', 'value'), Input('Brand_Strength','value'), Input('Product_Strength','value'), Input('Industry_Disruption','value'), Input('Turnaround_Plan','value'),Input('intermediate-value', 'children'),Input('Range','value'), Input('News','value'), Input('Analyst','value')]
 )
-def update_fundamental_score(a,b,c,d,e,f,g,h):
+def update_fundamental_score(temp, a,b,c,d,e,f,g,h):
+    if(temp=='N'):
+        return(html.H1('Advantage:———————'))
     l = [a,b,c,d]
     fundamental_score = round(100*((sum(l)+sum(e))/24))
     h = [f,g,h]
